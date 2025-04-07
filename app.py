@@ -15,7 +15,7 @@ def submit():
         data_storage.append(new_data)
     return "Data received!", 200
 
-@app.route('/data')
+@app.route('/gps')
 def get_data():
     return jsonify(data_storage)
 
