@@ -1,5 +1,5 @@
 async function fetchData() {
-    const response = await fetch('/data');
+    const response = await fetch('/position');
     const data = await response.json();
     const list = document.getElementById('data-list');
     list.innerHTML = '';
