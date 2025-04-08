@@ -8,14 +8,14 @@ data_storage = []
 def index():
    return render_template('index.html', data=data_storage)
    
-@app.route('/submit', methods=['POST'])
+@app.route('/submit/', methods=['POST'])
 def submit():
     new_data = request.form.get('value') # 예: HTML form에서 value 전송
     if new_data:
         data_storage.append(new_data)
     return "Data received!", 200
 
-@app.route('/gps')
+@app.route('/position/')
 def get_data():
     return jsonify(data_storage)
 
