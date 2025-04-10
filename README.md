@@ -22,7 +22,7 @@ index 페이지이며, 저장된 위치 정보를 출력
 ### /submit
 위치 정보를 입력받는 페이지이며 다음과 같은 명령어로 입력 가능
 ```bash
-curl -X POST -d "value=gpsValue" http://localhost:5000/submit
+curl -X POST -d "value=gpsValue" http://localhost:5000/submit/
 ```
 
 ### /position
