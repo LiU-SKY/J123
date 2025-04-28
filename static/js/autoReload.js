@@ -1,3 +1,4 @@
+//이하 자동 갱신
 async function fetchData() {
     const response = await fetch('/position');
     const data = await response.json();
@@ -15,4 +16,3 @@ fetchData();
 
 // 3초마다 자동 생신
 setInterval(fetchData, 3000);
-
