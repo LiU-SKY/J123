@@ -7,6 +7,10 @@ data_storage = []
 @app.route('/')
 def index():
    return render_template('index.html', data=data_storage)
+
+@app.route('/loging/')
+def loging():
+   return render_template('loging.html', data=data_storage)
    
 @app.route('/submit/', methods=['POST'])
 def submit():
