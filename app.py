@@ -9,8 +9,12 @@ def index():
    return render_template('index.html', data=data_storage)
 
 @app.route('/logging/')
-def loging():
+def logging():
    return render_template('logging.html', data=data_storage)
+
+@app.route('/register/')
+def register():
+   return render_template('register.html')
    
 @app.route('/submit/', methods=['POST'])
 def submit():
