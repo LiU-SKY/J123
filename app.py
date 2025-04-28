@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, redirect, url_for
 app = Flask(__name__)
 
 # 임시 저장소 (DB 대신 메모리 사용)
@@ -14,14 +14,14 @@ def logging():
 
 @app.route('/register/')
 def register():
-   return render_template('register.html')
+   return render_template('register.html', data=data_storage)
    
 @app.route('/submit/', methods=['POST'])
 def submit():
-    new_data = request.form.get('value') # 예: HTML form에서 value 전송
-    if new_data:
-        data_storage.append(new_data)
-    return "Data received!", 200
+      new_data = request.form.get('value') # 예: HTML form에서 value 전송
+      if new_data:
+         data_storage.append(new_data)
+      return redirect(url_for('register'))
 
 @app.route('/position/')
 def get_data():
