@@ -1,0 +1,129 @@
+<!doctype html>
+<html>
+<head>
+    <title>J123's DCP</title>
+    <style>
+        header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 10px;
+          background-color: #ffffff;
+        }
+        
+        .teamName {
+          padding: 0;
+          margin: 0;
+        }
+        
+        nav ul {
+          display: flex;
+          list-style: none;
+          margin: 0;
+          padding: 0;
+        }
+        
+        nav ul li {
+          margin-left: 20px;
+        }
+        
+        nav ul li a {
+          text-decoration: none;
+          color: black;
+          font-weight: bold;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: black;
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 12px; /* 둥근 모서리 */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* 약한 그림자 */
+            text-align: center;
+        }
+
+        .button:hover {
+        background-color: #333; /* 호버 시 살짝 밝게 */
+        }
+
+        #terminal {
+            background: black;
+            color: lime;
+            height: 400px;
+            overflow-y: auto; /* 요거 덕분에 div 내부 스크롤 */
+            padding: 10px;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        .sidebar {
+            width: 250px;
+            height: 10vh; /* 화면 전체 높이 */
+            background-color: #333;
+            color: white;
+            overflow-y: auto; /* 사이드바 내부만 스크롤 */
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1 class="teamName">J123's Drone Control Panel</h1>
+        <nav>
+            <ul>
+                <li><a href="/" class="button">Home</a></li>
+            </ul>
+        </nav>
+    </header>
+    <hr>
+    <h2>Register your drones and tags.</h2>
+    <p>Enter the drone and tag information to begin controlling your drone.</p>
+    <hr>
+    <div class="drone">
+        <form name="droneRegister">
+            <h2>Drone</h2>
+            <p>Enter the drone and tag information to begin controlling your drone.</p>
+            <input type="text" name="droneName" placeholder="Drone Name"></input><br>
+            <input type="text" name="droneAddress" placeholder="Drone Address"></input><br>
+            <input type="submit" value="Register">
+        </form>
+        <form name="droneDelete">
+            <select name="deleteDrone">
+                <option value="drone1">drone1</option>
+                <option value="drone2">drone2</option>
+            </select>
+            <input type="submit" value="Delete">
+        </form>
+    </div>
+    <div class="tag">
+        <form name="tagRegister">
+            <h2>Tag</h2>
+            <p>Enter the MAC address of the tag you wish to register.</p>
+            <input type="text" name="tagName" placeholder="Tag Name"></input><br>
+            <input type="text" name="tagAddress" placeholder="Tag Address"></input><br>
+            <input type="submit" value="Register">
+        </form>
+        <form name="tagDelete">
+            <select name="deleteTag">
+                <option value="tag1">Tag1</option>
+                <option value="tag2">Tag2</option>
+            </select>
+            <input type="submit" value="Delete">
+        </form>
+    </div>
+    <hr>
+    <h2>Result</h2>
+    <ul class="sidebar">
+        {% for item in data %}
+	    <li>{{ item }}</li>
+	    {% endfor %}
+    </ul>
+    <hr>
+    <footer>
+        <p>J123's Drone Control Panel</p>
+    </footer>
+</body>
+</html>
