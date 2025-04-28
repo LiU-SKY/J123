@@ -8,9 +8,9 @@ data_storage = []
 def index():
    return render_template('index.html', data=data_storage)
 
-@app.route('/loging/')
+@app.route('/logging/')
 def loging():
-   return render_template('loging.html', data=data_storage)
+   return render_template('logging.html', data=data_storage)
    
 @app.route('/submit/', methods=['POST'])
 def submit():
