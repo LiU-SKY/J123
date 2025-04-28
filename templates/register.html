@@ -50,15 +50,6 @@
         background-color: #333; /* 호버 시 살짝 밝게 */
         }
 
-        #terminal {
-            background: black;
-            color: lime;
-            height: 400px;
-            overflow-y: auto; /* 요거 덕분에 div 내부 스크롤 */
-            padding: 10px;
-            font-family: monospace;
-            white-space: pre-wrap;
-        }
         .sidebar {
             width: 250px;
             height: 10vh; /* 화면 전체 높이 */
@@ -83,14 +74,15 @@
     <p>Enter the drone and tag information to begin controlling your drone.</p>
     <hr>
     <div class="drone">
-        <form name="droneRegister">
+        <form name="droneRegister" action="/submit" method="post">
             <h2>Drone</h2>
             <p>Enter the drone and tag information to begin controlling your drone.</p>
             <input type="text" name="droneName" placeholder="Drone Name"></input><br>
             <input type="text" name="droneAddress" placeholder="Drone Address"></input><br>
+            <input type="text" name="value" placeholder="dTest"></input><br>
             <input type="submit" value="Register">
         </form>
-        <form name="droneDelete">
+        <form name="droneDelete" action="/submit" method="post">
             <select name="deleteDrone">
                 <option value="drone1">drone1</option>
                 <option value="drone2">drone2</option>
@@ -99,14 +91,15 @@
         </form>
     </div>
     <div class="tag">
-        <form name="tagRegister">
+        <form name="tagRegister" action="/submit" method="post">
             <h2>Tag</h2>
             <p>Enter the MAC address of the tag you wish to register.</p>
             <input type="text" name="tagName" placeholder="Tag Name"></input><br>
             <input type="text" name="tagAddress" placeholder="Tag Address"></input><br>
+            <input type="text" name="value" placeholder="tTest"></input><br>
             <input type="submit" value="Register">
         </form>
-        <form name="tagDelete">
+        <form name="tagDelete" action="/submit" method="post">
             <select name="deleteTag">
                 <option value="tag1">Tag1</option>
                 <option value="tag2">Tag2</option>
