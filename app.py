@@ -23,7 +23,7 @@ def register():
    data=list(collection.find({}, {'_id': False}))
    cursor = collection.find({}, {"name": 1, "_id": 0})
    droneList = [doc['name'] for doc in cursor]
-   return render_template('register.html', data, droneList)
+   return render_template('register.html', data=data, droneList=droneList)
    
 @app.route('/submit/', methods=['POST'])
 def submit():
