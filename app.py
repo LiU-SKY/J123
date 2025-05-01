@@ -48,7 +48,7 @@ def deleteDrone():
    return redirect(url_for('register'))
 
 # 태그 등록
-@app.route('/submit/register/tag/', method=['POST'])
+@app.route('/submit/register/tag/', methods=['POST'])
 def registerTag():
    selectDrone = request.form.get('selectDrone')
    tagName = request.form.get('tagName')
