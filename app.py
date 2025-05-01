@@ -20,9 +20,11 @@ def logging():
 
 @app.route('/register/')
 def register():
-   return render_template('register.html', data=list(collection.find({}, {'_id': False})))
+   data=list(collection.find({}, {'_id': False}))
+   droneList = list(collection.find({'name'}))
+   return render_template('register.html', data, droneList)
    
-@app.route('/submit/', methods=['GET', 'POST'])
+@app.route('/submit/', methods=['POST'])
 def submit():
    #data = request.json
    #collection.insert_one(data)
