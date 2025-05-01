@@ -21,9 +21,10 @@ def register():
    cursor = collection.find({}, {"name": 1, "_id": 0})
    droneList = [doc['name'] for doc in cursor]
    return render_template('register.html', data=data, droneList=droneList)
-   
-@app.route('/submit/', methods=['POST'])
-def submit():
+
+ # 드론 등록
+@app.route('/submit/register/drone/', methods=['POST'])
+def registerDrone():
    #data = request.json
    #collection.insert_one(data)
    droneName = request.form.get('droneName')
@@ -39,25 +40,25 @@ def submit():
    collection.insert_one(doc)
    return redirect(url_for('register'))
 
+# 드론 삭제
 @app.route('/submit/delete/drone/', methods=['POST'])
 def deleteDrone():
    droneName = request.form.get('deleteDrone')
    collection.delete_one({"name": droneName})
    return redirect(url_for('register'))
 
-'''
-new_data = request.form.get('value') # 예: HTML form에서 value 전송
-if new_data:
-   data_storage.append(new_data)
-return redirect(url_for('register'))
-'''
+# 태그 등록
+@app.route('/submit/register/tag/', method=['POST'])
+def registerTag():
+   selectDrone = request.form.get('selectDrone')
+   tagName = request.form.get('tagName')
+   collection.update_one(
+      {"name": selectDrone},
+      {"$set": {"tag,tag_name": tagName}}
+   )
+   return redirect(url_for('register'))
 
-'''
-@app.route('/all')
-def get_all():
-    all_data = list(collection.find({}, {'_id': False}))  # _id 제외
-    return jsonify(all_data)
-'''
+
 '''
 collection.update_one(
    {"name": "Drone A"},
