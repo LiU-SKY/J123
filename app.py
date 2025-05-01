@@ -27,7 +27,11 @@ def submit():
    #data = request.json
    #collection.insert_one(data)
    droneName = request.form.get('droneName')
-   return droneName
+   collection.update_one(
+      {"name": "Drone A"},
+      {"$set": {"name": f"{droneName}"}}
+   )
+   return redirect(url_for('register'))
 
 '''
 new_data = request.form.get('value') # 예: HTML form에서 value 전송
