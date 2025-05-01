@@ -8,19 +8,19 @@ db = client['DroneDB']  # 데이터베이스 이름
 collection = db['drones']  # 컬렉션 이름
 
 # 임시 저장소 (DB 대신 메모리 사용)
-data_storage = list(collection.find({}, {'_id': False}))  # _id 제외
+# data_storage = list(collection.find({}, {'_id': False}))  # _id 제외
 
 @app.route('/')
 def index():
-   return render_template('index.html', data=data_storage)
+   return render_template('index.html', data=list(collection.find({}, {'_id': False})))
 
 @app.route('/logging/')
 def logging():
-   return render_template('logging.html', data=data_storage)
+   return render_template('logging.html', data=list(collection.find({}, {'_id': False})))
 
 @app.route('/register/')
 def register():
-   return render_template('register.html', data=data_storage)
+   return render_template('register.html', data=list(collection.find({}, {'_id': False})))
    
 @app.route('/submit/', methods=['GET', 'POST'])
 def submit():
