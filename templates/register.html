@@ -83,7 +83,7 @@
             <input type="text" name="value" placeholder="dTest"></input><br>
             <input type="submit" value="Register">
         </form>
-        <form name="droneDelete" action="/submit" method="post">
+        <form name="droneDelete" action="/submit/delete/drone" method="post">
             <select name="deleteDrone">
                 {% for drone in droneList %}
                     <option value="{{ drone }}">{{ drone }}</option>
