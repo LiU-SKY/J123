@@ -21,7 +21,8 @@ def logging():
 @app.route('/register/')
 def register():
    data=list(collection.find({}, {'_id': False}))
-   droneList = list(collection.find({'name'}))
+   cursor = collection.find({}, {"name": 1, "_id": 0})
+   droneList = [doc['name'] for doc in cursor]
    return render_template('register.html', data, droneList)
    
 @app.route('/submit/', methods=['POST'])
