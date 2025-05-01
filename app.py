@@ -28,12 +28,12 @@ def submit():
    #collection.insert_one(data)
    droneName = request.form.get('droneName')
    doc = {
-      "name": f"{droneName}",
-      "status": "",
-      "location": "",
-      "tag": {"mac_address": "",
-              "tag_name": "",
-              "location": ""
+      "name": droneName,
+      "status": None,
+      "location": None,
+      "tag": {"mac_address": None,
+              "tag_name": None,
+              "location": None
             }
    }
    collection.insert_one(doc)
