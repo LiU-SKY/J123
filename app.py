@@ -26,9 +26,8 @@ def register():
 def submit():
    #data = request.json
    #collection.insert_one(data)
-   droneName = dict(request.form.get('droneName'))
-   collection.find({'name'}) = droneName
-   return list(collection.find({}, {'_id': False}))
+   droneName = request.form.get('droneName')
+   return droneName
 
 '''
 new_data = request.form.get('value') # 예: HTML form에서 value 전송
