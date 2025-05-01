@@ -27,23 +27,37 @@ def submit():
    #data = request.json
    #collection.insert_one(data)
    droneName = request.form.get('droneName')
-   collection.update_one(
-      {"name": "Drone A"},
-      {"$set": {"name": f"{droneName}"}}
-   )
+   doc = {
+      "name": f"{droneName}",
+      "status": "",
+      "location": "",
+      "tag": {"mac_address": "",
+              "tag_name": "",
+              "location": ""
+            }
+   }
+   collection.insert_one(doc)
    return redirect(url_for('register'))
 
 '''
 new_data = request.form.get('value') # 예: HTML form에서 value 전송
 if new_data:
    data_storage.append(new_data)
-return redirect(url_for('register'))'''
+return redirect(url_for('register'))
+'''
 
 '''
 @app.route('/all')
 def get_all():
     all_data = list(collection.find({}, {'_id': False}))  # _id 제외
-    return jsonify(all_data)'''
+    return jsonify(all_data)
+'''
+'''
+collection.update_one(
+   {"name": "Drone A"},
+   {"$set": {"name": f"{droneName}"}}
+)
+'''
 
 @app.route('/position/')
 def get_data():
