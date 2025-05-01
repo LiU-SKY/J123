@@ -27,7 +27,7 @@ def submit():
    #data = request.json
    #collection.insert_one(data)
    new_data = dict(request.form)
-   return new_data
+   return jsonify(new_data)
 
 '''
 new_data = request.form.get('value') # 예: HTML form에서 value 전송
