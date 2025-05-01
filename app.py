@@ -22,18 +22,21 @@ def logging():
 def register():
    return render_template('register.html', data=data_storage)
    
-@app.route('/submit/', methods=['POST'])
+@app.route('/submit/', methods=['GET', 'POST'])
 def submit():
-   data = request.json
-   collection.insert_one(data)
-   return redirect(url_for('register'))
+   #data = request.json
+   #collection.insert_one(data)
+   new_data = request.form.get('value')
+   return jsonify(new_data)
 
-'''new_data = request.form.get('value') # 예: HTML form에서 value 전송
+'''
+new_data = request.form.get('value') # 예: HTML form에서 value 전송
 if new_data:
    data_storage.append(new_data)
 return redirect(url_for('register'))'''
 
-'''@app.route('/all')
+'''
+@app.route('/all')
 def get_all():
     all_data = list(collection.find({}, {'_id': False}))  # _id 제외
     return jsonify(all_data)'''
