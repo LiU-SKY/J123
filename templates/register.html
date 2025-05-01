@@ -85,8 +85,9 @@
         </form>
         <form name="droneDelete" action="/submit" method="post">
             <select name="deleteDrone">
-                <option value="drone1">drone1</option>
-                <option value="drone2">drone2</option>
+                {% for drone in droneList %}
+                    <option value="{{ drone }}">{{ drone }}</option>
+                {% endfor %}
             </select>
             <input type="submit" value="Delete">
         </form>
