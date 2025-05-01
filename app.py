@@ -7,9 +7,6 @@ client = MongoClient('mongodb://localhost:27017/')
 db = client['DroneDB']  # 데이터베이스 이름
 collection = db['drones']  # 컬렉션 이름
 
-# 임시 저장소 (DB 대신 메모리 사용)
-# data_storage = list(collection.find({}, {'_id': False}))  # _id 제외
-
 @app.route('/')
 def index():
    return render_template('index.html', data=list(collection.find({}, {'_id': False})))
@@ -40,6 +37,12 @@ def submit():
             }
    }
    collection.insert_one(doc)
+   return redirect(url_for('register'))
+
+@app.route('/submit/delete/drone/', methods=['POST'])
+def deleteDrone():
+   droneName = request.form.get('deleteDrone')
+   collection.delete_one({"name": droneName})
    return redirect(url_for('register'))
 
 '''
