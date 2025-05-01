@@ -54,7 +54,7 @@ def registerTag():
    tagName = request.form.get('tagName')
    collection.update_one(
       {"name": selectDrone},
-      {"$set": {"tag,tag_name": tagName}}
+      {"$set": {"tag.tag_name": tagName}}
    )
    return redirect(url_for('register'))
 
