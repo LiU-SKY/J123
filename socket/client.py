@@ -13,7 +13,7 @@
 import asyncio
 import websockets
 
-SERVER_URI = "ws://localhost:8765"  # 서버 주소
+SERVER_URI = "ws://52.79.236.231:8765"  # 서버 주소
 
 
 async def communicate_with_server():
