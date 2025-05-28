@@ -10,7 +10,7 @@
 
 # server.py (websockets 12.x 호환)
 import asyncio
-from websockets.legacy.server import serve  # ✅ 변경된 serve 위치
+from websockets.legacy.server import serve  # ✅ websockets 12.x에서 serve 위치
 import websockets
 
 async def handler(websocket, path):
@@ -23,12 +23,14 @@ async def handler(websocket, path):
         print("❌ 연결 종료됨")
 
 async def main():
-    async with serve(handler, "localhost", 8765):  # ✅ 변경된 serve 사용
-        print("🚀 서버 시작됨: ws://localhost:8765")
+    # ✅ 0.0.0.0으로 수정 → 외부 접속 허용
+    async with serve(handler, "0.0.0.0", 8765):
+        print("🚀 서버 시작됨: ws://0.0.0.0:8765 (외부 접속 허용)")
         await asyncio.Future()  # 무한 대기
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
