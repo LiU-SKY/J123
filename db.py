@@ -1,37 +1,53 @@
 from pymongo import MongoClient
+from bson import ObjectId
 
-# MongoDB에 연결
-client = MongoClient("mongodb://localhost:27017")  
-# MongoDB URI (로컬 또는 Atlas)
+# MongoDB 연결
+client = MongoClient('mongodb://localhost:27017')
+db = client['DroneDB']
+tags_collection = db['tags']
 
-# 사용할 데이터베이스 선택
-db = client["DroneDB"]
+# 태그 등록
+def register_tag(mac_address, tag_name, location):
+    if tags_collection.find_one({"mac_address": mac_address}):
+        return {"error": "이미 등록된 MAC 주소입니다"}, 409
 
-# 사용할 컬렉션 선택
-collection = db["drones"]
+    tags_collection.insert_one({
+        "mac_address": mac_address,
+        "tag_name": tag_name,
+        "location": location
+    })
+    return {"message": "태그 등록 성공"}, 201
 
-# 데이터 삽입 함수
-def insert_data(data):
-    collection.insert_one(data)
+# 태그 전체 조회
+def get_all_tags():
+    tags = list(tags_collection.find({}, {'_id': 0}))  # ObjectId 제외
+    return {"tags": tags}, 200
 
-# 데이터 조회 함수
-def get_all_data():
-    return list(collection.find())
-# 데이터 검색
-def search_by_name(name):
-    return list(collection.find({"name": name}))
+# 태그 수정 (mac_address 기준)
+def update_tag(mac_address, new_tag_name=None, new_location=None):
+    update_fields = {}
+    if new_tag_name:
+        update_fields['tag_name'] = new_tag_name
+    if new_location:
+        update_fields['location'] = new_location
 
-# 조회와 검색은 다른것 조회는 데이터 조회, 검색은 이름 검색
+    if not update_fields:
+        return {"error": "변경할 내용이 없습니다."}, 400
 
-# 데이터 수정
-def update_by_id(document_id, new_data):
-    result = collection.update_one(
-        {"_id": ObjectId(document_id)},
-        {"$set": new_data}
+    result = tags_collection.update_one(
+        {"mac_address": mac_address},
+        {"$set": update_fields}
     )
-    return result.modified_count
 
-# 데이터 삭제
-def delete_by_id(document_id):
-    result = collection.delete_one({"_id": ObjectId(document_id)})
-    return result.deleted_count
+    if result.matched_count == 0:
+        return {"error": "해당 MAC 주소를 찾을 수 없습니다."}, 404
+
+    return {"message": "태그 수정 성공"}, 200
+
+# 태그 삭제 (mac_address 기준)
+def delete_tag(mac_address):
+    result = tags_collection.delete_one({"mac_address": mac_address})
+    if result.deleted_count == 0:
+        return {"error": "삭제할 태그를 찾을 수 없습니다."}, 404
+
+    return {"message": "태그 삭제 성공"}, 200
