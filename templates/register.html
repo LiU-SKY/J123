@@ -93,26 +93,53 @@
     </div>-->
     
     <!--이하 태그 등록 및 제거-->
+    <h2>Current</h2>
+    <ul>
+        {% for item in data%}
+        <li>{{ item['tag_name'] }}</li>
+        {% endfor %}
+    </ul>
+    <hr>
     <div class="tag">
-        <form name="tagRegister" action="/submit/register/tag" method="post">
+        <form name="registerTag" action="/submit/register/tag" method="post">
             <h2>Tag</h2>
             <p>Enter the MAC address of the tag you wish to register.</p>
             <input type="text" name="tagName" placeholder="Tag Name"></input><br>
-            <input type="text" name="tagAddress" placeholder="Tag Address"></input><br>
+            <input type="text" name="macAddress" placeholder="Mac Address"></input><br>
             <input type="submit" value="Register">
         </form>
-        <form name="tagDelete" action="/submit" method="post">
+        <form name="deleteTag" action="/submit/delete/tag" method="post">
             <select name="deleteTag">
-                <option value="tag1">Tag1</option>
-                <option value="tag2">Tag2</option>
+                {% for item in data%}
+                    <option value="{{ item['mac_address'] }}">{{ item['mac_address'] }}</option>
+	            {% endfor %}
             </select>
             <input type="submit" value="Delete">
+        </form>
+        <hr>
+        <form name="editTag" action="/submit/edit/tag" method="post">
+            <h2>Edit tag</h2>
+            <p>Enter new information of the tag you wish to update.</p>
+            <select name="macAddress">
+                {% for item in data%}
+                    <option value="{{ item['mac_address'] }}">{{ item['mac_address'] }}</option>
+	            {% endfor %}
+            </select>
+            <br>
+            <input type="text" name="tagName" placeholder="Tag Name"></input><br>
+            <input type="submit" value="Edit">
         </form>
     </div>
     <hr>
     <h2>Result</h2>
     <ul class="sidebar">
-	    <li>{{ item }}</li>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {%  endfor %}
+            {% endif %}
+        {% endwith %}
     </ul>
     <hr>
     <footer>
