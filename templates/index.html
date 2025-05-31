@@ -75,13 +75,13 @@
     <p>Select your drone and tag, and the drone will find your items.</p>
     <hr>
     <h2>Drone</h2>
-    <input type="radio" name="drone" value="drone1" checked>drone1</input><br>
-    <input type="radio" name="drone" value="drone2">drone2</input><br>
-    <input type="radio" name="drone" value="drone3">drone3</input><br>
+    {% for item in data%}
+    <input type="radio" name="drone" value="{{ item['tag_name'] }}" {% if loop.first %}checked{% endif %}>{{ item['tag_name'] }}<br>
+	  {% endfor %}
     <hr>
     <h2>Result</h2>
     <ul class="sidebar">
-        {% for item in data %}
+      {% for item in data %}
 	    <li>{{ item }}</li>
 	    {% endfor %}
     </ul>
