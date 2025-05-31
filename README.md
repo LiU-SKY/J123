@@ -28,46 +28,5 @@ Flask 페이지는 서버에서 localhost로만 실행되며, GPS 정보를 화�
 등록 페이지<br/>
 드론 및 태그 등록/삭제, 로깅 지원
 
-### /submit
-위치 정보를 입력받는 페이지이며 다음과 같은 명령어로 입력 가능
-```bash
-curl -X POST -d "value=gpsValue" http://localhost:5000/submit/
-```
-
-### /position
-위치 정보를 json 형태로 저장하는 페이지이며, 자동 갱신 기능 활성 시 사용
-
 # nginx 서버
 사용자는 nginx proxy를 통해 접속하고, nginx가 flask 페이지와 사용자 중간에 위치
-
-# MongoDB
-```MongoDB
-[
-  {
-    _id: ObjectId('68024808fb70db1095d861e2'),
-    name: 'Drone A',
-    status: '활동 중',
-    loaction: { lat: 37.7749, lon: -122.4194 },
-    tag: {
-      mac_address: 'AA:BB:CC:DD:EE:FF',
-      tag_name: 'Tag-1',
-      location: 'Zone A'
-    }
-  }
-]
-```
-
-## 데이터 전송 방법
-### 셸
-```bash
-curl -X POST -H "Content-Type: application/json" -d '{"value": "gpsValue"}' http://localhost:5000/submit/
-```
-
-### flask
-```python
-@app.route('/submit/', methods=['POST'])
-def submit():
-    data = request.get_json()
-    value = data.get('value')
-    return f"Received value: {value}", 200
-```
