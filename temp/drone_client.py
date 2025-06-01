@@ -4,7 +4,7 @@ import websockets
 from bleak import BleakScanner
 
 DRONE_ID = "drone01"
-SERVER_URI = "ws://<서버IP>:8765"
+SERVER_URI = "ws://52.79.236.231:8765"
 
 async def start_tracking(target_mac):
     alpha = 0.3
