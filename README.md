@@ -3,6 +3,10 @@
 # 깃허브 최상위 폴더
 - app.py: Flask 실행파일
 - assets: README.md에 사용될 이미지 등을 저장
+- db.py: mongodb 스크립트
+- requirements.txt: 파이썬 패키지 설치 스크립트
+- - capstone 가상환경 실행 후 패키지 설치 및 app.py 실행
+- - `pip install -r requirements.txt`
 - static: 자바스크립트 등 정적 웹페이지 구성요소 저장
 - templates: index.html 등 웹 페이지 저장
 
