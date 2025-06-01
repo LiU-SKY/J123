@@ -23,18 +23,30 @@ async def handler(websocket, path):
 
             elif message.startswith("ble:"):
                 _, mac, name = message.split(":", 2)
-                ble_logs.insert_one({
-                    "drone_id": drone_id,
-                    "mac_address": mac,
-                    "device_name": name,
-                    "timestamp": datetime.datetime.utcnow()
-                })
-                print(f"📡 BLE 기기 수신: {mac} - {name}")
+                # ✅ MAC 주소 중복 시 덮어쓰기 (upsert 사용)
+
+                ble_logs.update_one(
+                    {"drone_id": drone_id, "mac_address": mac},  # 조건: 드론+MAC
+                    {"$set": {
+                        "device_name": name,
+                        "timestamp": datetime.datetime.utcnow()
+                    }},
+                    upsert=True
+                )
+                print(f"📡 BLE 기기 갱신됨: {mac} - {name}")
+
+
 
     except websockets.exceptions.ConnectionClosed:
         print(f"❌ {drone_id} 연결 종료됨")
+        # WebSocket 연결 목록에서 제거
         if drone_id in connected_drones:
             del connected_drones[drone_id]
+        # ✅ 드론 정보 삭제 (예: drones 컬렉션 사용 시)
+        db["drones"].delete_one({"drone_id": drone_id})
+        # ✅ 해당 드론의 BLE 로그 삭제
+        ble_logs.delete_many({"drone_id": drone_id})
+        print(f"🗑️ 드론 '{drone_id}' 관련 정보 삭제 완료")
 
 # WebSocket 서버 시작
 async def start_websocket_server():
