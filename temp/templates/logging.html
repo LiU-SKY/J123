@@ -1,84 +1,47 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <title>BLE 기기 추적 시스템</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 40px;
-        }
-        h1 {
-            color: #333;
-        }
-        .message {
-            padding: 10px;
-            margin-bottom: 20px;
-            border-radius: 5px;
-        }
-        .success {
-            background-color: #e0ffe0;
-            border: 1px solid #00a000;
-        }
-        .error {
-            background-color: #ffe0e0;
-            border: 1px solid #d00000;
-        }
-        .device-list {
-            margin: 20px 0;
-        }
-        .device-item {
-            padding: 5px 0;
-        }
-        .submit-button {
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #005bea;
-            color: white;
-            border: none;
-            border-radius: 5px;
-        }
-    </style>
-</head>
 <body>
-    <h1>BLE 기기 목록 및 추적 요청</h1>
+    <h1>BLE 기기 목록</h1>
 
-    <!-- Flash 메시지 표시 -->
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            {% for category, message in messages %}
-                <div class="message {{ category }}">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
-
-    <form action="{{ url_for('track_device') }}" method="post">
+    <form action="/submit/track" method="post">
         <label>드론 선택:
             <select name="drone_id">
                 <option value="drone01">drone01</option>
-                <!-- 향후 드론이 여러 대일 경우 확장 가능 -->
             </select>
         </label>
 
-        <div class="device-list">
-            <h3>스캔된 BLE 기기 목록</h3>
-            {% if ble_data %}
-                {% for device in ble_data %}
-                    <div class="device-item">
-                        <label>
-                            <input type="radio" name="mac_address" value="{{ device.mac_address }}">
-                            {{ device.mac_address }} - {{ device.device_name }}
-                        </label>
-                    </div>
-                {% endfor %}
-            {% else %}
-                <p>현재 표시할 기기 정보가 없습니다.</p>
-            {% endif %}
+        <div id="device-list">
+            <!-- 여기에 BLE 목록이 동적으로 삽입됨 -->
         </div>
 
-        <button type="submit" class="submit-button">추적 시작</button>
+        <button type="submit">추적 시작</button>
     </form>
+
+    <script>
+        async function loadBLEList() {
+            const response = await fetch("/api/ble_list");
+            const data = await response.json();
+
+            const listDiv = document.getElementById("device-list");
+            listDiv.innerHTML = ""; // 기존 리스트 초기화
+
+            if (data.length === 0) {
+                listDiv.innerHTML = "<p>현재 BLE 기기 없음</p>";
+                return;
+            }
+
+            for (const device of data) {
+                const div = document.createElement("div");
+                div.innerHTML = `
+                    <label>
+                        <input type="radio" name="mac_address" value="${device.mac_address}">
+                        ${device.mac_address} - ${device.device_name}
+                    </label>
+                `;
+                listDiv.appendChild(div);
+            }
+        }
+
+        // 5초마다 갱신
+        setInterval(loadBLEList, 5000);
+        loadBLEList(); // 초기 로딩
+    </script>
 </body>
-</html>

@@ -35,6 +35,12 @@ def track_device():
 
     return redirect(url_for('logging'))
 
+@app.route("/api/ble_list")
+def ble_list_api():
+    ble_data, _ = db.get_recent_ble_logs()
+    return ble_data  # Flask는 자동으로 JSON으로 반환
+
+
 # 비동기 WebSocket 전송
 async def send_tracking_command(drone_id, mac_address):
     ws = connected_drones[drone_id]
