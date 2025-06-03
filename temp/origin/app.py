@@ -75,7 +75,7 @@ def editTag():
 
 @app.route('/submit/track', methods=['POST'])
 def track_device():
-    drone_id = request.form.get('drone_id')
+    drone_id = 'drone01'
     mac_address = request.form.get('mac_address')
 
     if not drone_id or not mac_address:
@@ -96,6 +96,7 @@ async def send_tracking_command(drone_id, mac_address):
         async with websockets.connect("ws://52.79.236.231:8765") as ws:
             await ws.send(json.dumps({
                 "type": "track",
+                "drone_id": drone_id,
                 "mac": mac_address
             }))
     except Exception as e:
