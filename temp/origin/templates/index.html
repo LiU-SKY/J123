@@ -16,28 +16,23 @@
     </header>
     <hr>
     <h2>Let the drone locate your items.</h2>
-    <p>Select your drone and tag, and the drone will find your items.</p>
+    <p>Select a tag and press "Track" to command the drone to find it.</p>
     <hr>
 
-    <!-- ✅ 추적용 폼 시작 -->
+    <!-- ✅ 추적용 폼 -->
     <form action="/submit/track" method="post">
-        <h2>Drone</h2>
-        {% for item in data %}
-            <input type="radio" name="drone_id" value="{{ item['tag_name'] }}" {% if loop.first %}checked{% endif %}>
-            {{ item['tag_name'] }}<br>
-        {% endfor %}
+        <!-- 드론 ID는 고정값으로 숨김 처리 -->
+        <input type="hidden" name="drone_id" value="drone01">
 
-        <hr>
-        <h2>Tag (MAC Address)</h2>
+        <h2>Tags</h2>
         {% for item in data %}
             <input type="radio" name="mac_address" value="{{ item['mac_address'] }}" {% if loop.first %}checked{% endif %}>
-            {{ item['mac_address'] }} - {{ item['tag_name'] }}<br>
+            {{ item['tag_name'] }} ({{ item['mac_address'] }})<br>
         {% endfor %}
 
         <br>
         <button type="submit" class="button">📡 추적 시작</button>
     </form>
-    <!-- ✅ 폼 끝 -->
 
     <hr>
     <h2>Result</h2>
