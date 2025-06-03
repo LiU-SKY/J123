@@ -1,0 +1,19 @@
+<!doctype html>
+<html>
+<head>
+    <title>Data Dashboard</title>
+</head>
+<body>
+    <h1>Received Data</h1>
+    <ul>
+        {% for item in data %}
+	    <li>{{ item }}</li>
+	{% endfor %}
+    </ul>
+    <!--자동갱신 시 주석해제
+    <h1>Received Data(자동갱신)</h1>
+    <ul id="data-list"></ul>
+    <script src="{{ url_for('static', filename='autoReload.js') }}"></script>
+    -->
+</body>
+</html>

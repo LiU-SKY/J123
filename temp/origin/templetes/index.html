@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+<head>
+    <title>J123's DCP</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <h1 class="teamName">J123's Drone Control Panel</h1>
+        <nav>
+            <ul>
+                <li><a href="/logging" class="button">Logging</a></li>
+                <li><a href="/register" class="button">Register</a></li>
+            </ul>
+        </nav>
+    </header>
+    <hr>
+    <h2>Let the drone locate your items.</h2>
+    <p>Select your drone and tag, and the drone will find your items.</p>
+    <hr>
+
+    <!-- ✅ 추적용 폼 시작 -->
+    <form action="/submit/track" method="post">
+        <h2>Drone</h2>
+        {% for item in data %}
+            <input type="radio" name="drone_id" value="{{ item['tag_name'] }}" {% if loop.first %}checked{% endif %}>
+            {{ item['tag_name'] }}<br>
+        {% endfor %}
+
+        <hr>
+        <h2>Tag (MAC Address)</h2>
+        {% for item in data %}
+            <input type="radio" name="mac_address" value="{{ item['mac_address'] }}" {% if loop.first %}checked{% endif %}>
+            {{ item['mac_address'] }} - {{ item['tag_name'] }}<br>
+        {% endfor %}
+
+        <br>
+        <button type="submit" class="button">📡 추적 시작</button>
+    </form>
+    <!-- ✅ 폼 끝 -->
+
+    <hr>
+    <h2>Result</h2>
+    <ul class="sidebar">
+      {% for item in data %}
+        <li>{{ item }}</li>
+      {% endfor %}
+    </ul>
+    <hr>
+    <footer>
+        <p>J123's Drone Control Panel</p>
+    </footer>
+</body>
+</html>
