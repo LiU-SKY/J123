@@ -93,7 +93,7 @@ def track_device():
 # JSON 형식으로 WebSocket 명령 전송
 async def send_tracking_command(drone_id, mac_address):
     try:
-        async with websockets.connect("ws://localhost:8765") as ws:
+        async with websockets.connect("ws://52.79.236.231:8765") as ws:
             await ws.send(json.dumps({
                 "type": "track",
                 "mac": mac_address
