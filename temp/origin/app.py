@@ -80,7 +80,7 @@ def track_device():
 
     if not drone_id or not mac_address:
         flash("드론 또는 MAC 주소가 선택되지 않았습니다.", "error")
-        return redirect(url_for('logging'))
+        return redirect(url_for('index'))
 
     try:
         asyncio.run(send_tracking_command(drone_id, mac_address))
@@ -88,7 +88,7 @@ def track_device():
     except Exception as e:
         flash(f"{drone_id} 명령 전송 실패: {e}", "error")
 
-    return redirect(url_for('logging'))
+    return redirect(url_for('index'))
 
 # JSON 형식으로 WebSocket 명령 전송
 async def send_tracking_command(drone_id, mac_address):
