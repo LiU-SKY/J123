@@ -8,7 +8,7 @@ from pymavlink import mavutil
 # raspi-config와 /boot/firmware/config.txt 설정 후 확인된 포트 이름
 CONNECTION_PORT = '/dev/serial0'
 # 픽스호크 TELEM2 포트의 BAUD RATE (QGroundControl에서 SER_TEL2_BAUD 설정에 맞춤)
-BAUD_RATE = 921600  # 픽스호크 SER_TEL2_BAUD 값과 일치해야 합니다.
+BAUD_RATE = 57600  # 픽스호크 SER_TEL2_BAUD 값과 일치해야 합니다.
 
 # 이륙 관련 설정
 TAKEOFF_THROTTLE = 500  # 적절한 이륙 스로틀 값 (0-1000) - 드론마다 다름!
