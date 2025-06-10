@@ -49,7 +49,8 @@ def wait_for_mode_change(master, target_mode_name, timeout_seconds=10):
     while time.time() - start_time < timeout_seconds:
         msg = master.recv_match(type='HEARTBEAT', blocking=True, timeout=1)
         if msg:
-            current_mode = master.flight_mode()
+            # HEARTBEAT 메시지에서 비행 모드 문자열을 추출합니다.
+            current_mode = mavutil.mode_string_v10(msg)  # <--- 수정된 부분
             if current_mode == target_mode_name:
                 print(f"-- 모드 '{target_mode_name}'로 전환되었습니다.")
                 return True
@@ -118,39 +119,18 @@ def send_rc_override(master, throttle_value):
     MAVLink RC_CHANNELS_OVERRIDE 메시지를 보내 스로틀 값을 직접 제어합니다.
     GPS가 없을 때 Altitude Control 모드에서 이륙/착륙에 사용될 수 있습니다.
     """
-    # 채널 1-4는 롤, 피치, 요, 스로틀에 해당합니다. (PX4 기본 RC 맵핑 기준)
-    # 롤, 피치, 요는 중립(1500)으로 설정하고, 스로틀만 변경합니다.
-    # 각 채널의 값 범위는 일반적으로 1000(최소) ~ 2000(최대)입니다.
-    # 여기서 throttle_value는 0-1000 스케일이므로, 1000-2000으로 변환해야 합니다.
-    # 1000 + (throttle_value)
-
     # MAVLink RC_CHANNELS_OVERRIDE 메시지 전송
+    # 각 채널의 값 범위는 일반적으로 1000(최소) ~ 2000(최대)입니다.
+    # 스로틀 (channel 3) 값만 변경하고 나머지는 중립(1500)으로 유지합니다.
+
     master.mav.rc_channels_override_send(
         master.target_system,
         master.target_component,
         1500,  # channel 1 (roll)
         1500,  # channel 2 (pitch)
-        1500,  # channel 3 (throttle) - 이 값은 아래에서 변경됩니다.
+        int(1000 + throttle_value),  # channel 3 (throttle) - 0-1000 스케일을 1000-2000으로 매핑
         1500,  # channel 4 (yaw)
         0, 0, 0, 0  # channel 5-8 (unused)
-    )
-    # `channel 3` (스로틀) 값을 업데이트합니다.
-    # PX4의 경우 RC_CHANNELS_OVERRIDE 메시지를 받을 때
-    # 스로틀 채널 (보통 3번)은 1000~2000 스케일의 PWM 값을 기대합니다.
-    # 따라서 TAKEOFF_THROTTLE (0-1000)을 이 범위로 매핑해야 합니다.
-    # 여기서는 임시로 1000 + throttle_value 로 매핑합니다.
-    # 이 부분은 픽스호크의 RC 캘리브레이션 및 FC 파라미터에 따라 달라질 수 있습니다.
-
-    # 롤, 피치, 요, 스로틀 순서 (CH1, CH2, CH3, CH4)
-    # 스로틀 채널(보통 3번)만 제어합니다.
-    master.mav.rc_channels_override_send(
-        master.target_system,
-        master.target_component,
-        1500,  # Roll (Aileron)
-        1500,  # Pitch (Elevator)
-        int(1000 + throttle_value),  # Throttle
-        1500,  # Yaw (Rudder)
-        0, 0, 0, 0  # 나머지 채널은 사용하지 않음
     )
     # print(f"RC Override 스로틀 값 전송: {int(1000 + throttle_value)}") # 디버깅용
 
@@ -170,7 +150,6 @@ def get_current_altitude(master, timeout=5):
             relative_alt_m = msg.altitude_relative
             return relative_alt_m
         time.sleep(0.01)
-    # print("경고: 고도 정보를 가져오지 못했습니다.") # 너무 많이 출력될 수 있어 주석 처리
     return None
 
 
@@ -198,21 +177,8 @@ try:
         time.sleep(0.1)  # 100ms마다 스로틀 명령 전송
 
     print(f"\n--- 호버링 시작 ({HOVER_DURATION_SECONDS}초간) ---")
-    # 호버링을 위해 스로틀을 중립으로 (대략 500이지만, 드론마다 다름)
-    # ALTCTL 모드이므로, 드론이 자체적으로 고도를 유지하려고 시도합니다.
-    # 그러나 RC_CHANNELS_OVERRIDE를 보내면 ALTCTL의 고도 유지 기능을 무시할 수 있으므로,
-    # 여기서는 스로틀을 다시 0으로 보내 RC Override를 해제합니다.
-    # RC Override를 멈추면 PX4는 마지막 RC 입력 값을 기반으로 ALTCTL을 유지합니다.
-    # 따라서 호버링을 위해서는 RC_CHANNELS_OVERRIDE를 멈추거나
-    # ALTCTL 모드의 스로틀 중립값(보통 500)으로 맞춰줘야 합니다.
-    # MAVLink 명령으로 고도 유지 명령을 보내는 것이 더 정확합니다.
-    # 여기서는 간단히 RC_CHANNELS_OVERRIDE를 멈춰서 PX4의 ALTCTL이 동작하도록 합니다.
-
-    # RC Override 메시지를 보내지 않으면, PX4는 마지막 유효한 RC 신호를 사용하거나
-    # 안전 모드로 전환될 수 있습니다.
-    # MAVLink 시스템에서 이륙 후 고도를 유지하는 가장 좋은 방법은 Offboard 모드를 사용하는 것입니다.
-    # 하지만 여기서는 ALTCTL 모드를 사용하고 있으므로, 별도의 스로틀 명령을 계속 보내지 않고
-    # PX4의 내부 ALTCTL 로직이 작동하도록 맡깁니다.
+    # RC_CHANNELS_OVERRIDE 메시지를 계속 보내지 않으면
+    # PX4의 ALTCTL 모드에서 드론이 자동으로 고도를 유지하려고 시도합니다.
     print(f"{HOVER_DURATION_SECONDS}초 동안 대기...")
     time.sleep(HOVER_DURATION_SECONDS)  # 호버링 시간 대기
 
@@ -220,17 +186,34 @@ try:
     start_time = time.time()
     while time.time() - start_time < LANDING_DURATION_SECONDS:
         # 착륙을 위해 스로틀을 점차 줄이거나, 낮은 값으로 유지
-        # 안전하게 착륙하려면 점진적으로 줄이는 로직이 필요합니다.
         send_rc_override(master, LANDING_THROTTLE)  # 착륙 스로틀 값 전송
         current_alt = get_current_altitude(master)
-        if current_alt is not None:
-            print(f"   현재 고도: {current_alt:.2f}m")
-            if current_alt < 0.5:  # 0.5m 이내로 내려오면 착륙으로 간주
-                print("-- 지면에 근접했습니다. 모터 정지를 대기합니다.")
-                break
-        time.sleep(0.1)
 
-    print("착륙 절차 완료. 모터 정지 대기...")
+        # 현재 모드도 함께 확인하여 착륙 진행 상태 판단
+        heartbeat_msg_land = master.recv_match(type='HEARTBEAT', blocking=False, timeout=0.1)
+        current_flight_mode_land = ""
+        if heartbeat_msg_land:
+            current_flight_mode_land = mavutil.mode_string_v10(heartbeat_msg_land)  # <--- 수정된 부분
+
+        if current_alt is not None:
+            print(f"   현재 고도: {current_alt:.2f}m, 모드: {current_flight_mode_land}")
+
+            # 고도가 0.5m 미만이고, 드론이 착륙 모드에 있거나 ARM 해제 상태라면 착륙 완료로 간주
+            # PX4는 착륙 후 자동으로 Disarm 되는 경우가 많습니다.
+            if current_alt < 0.5 and not master.motors_armed():
+                print("-- 착륙 완료 및 Disarm 확인.")
+                break
+            elif current_alt < 0.5 and current_flight_mode_land == 'ALTCTL':  # 여전히 ALTCTL 모드이고 고도가 낮으면
+                print("-- 지면에 근접했습니다. 모터 정지를 대기합니다.")
+                # PX4는 ALTCTL에서 착륙 시 스로틀이 매우 낮으면 자동으로 모터 정지 (disarm) 시퀀스에 들어갈 수 있습니다.
+                time.sleep(1)  # 모터 정지를 기다릴 시간
+                if not master.motors_armed():
+                    print("-- 착륙 완료 (모터 정지 확인).")
+                    break
+
+        time.sleep(0.1)  # 메시지 수신 주기
+
+    print("착륙 절차 완료.")
     # 착륙 후 드론이 자동으로 Disarm 될 때까지 기다립니다.
     start_time = time.time()
     while master.motors_armed() and (time.time() - start_time < 10):
@@ -247,7 +230,7 @@ except Exception as e:
     if master.motors_armed():
         print("오류 발생으로 인한 비상 Disarm 시도...")
         try:
-            disarm_drone(master)
+            disarm_drone(master)  # 안전을 위해 Disarm 시도
         except Exception as err:
             print(f"비상 처리 중 오류 발생: {err}")
 finally:
