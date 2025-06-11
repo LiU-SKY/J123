@@ -14,36 +14,37 @@
             </ul>
         </nav>
     </header>
-    <hr>
-    <h2>Let the drone locate your items.</h2>
-    <p>Select a tag and press "Track" to command the drone to find it.</p>
-    <hr>
-
-    <!-- ✅ 추적용 폼 -->
-    <form action="/submit/track" method="post">
-        <!-- 드론 ID는 고정값으로 숨김 처리 -->
-        <input type="hidden" name="drone_id" value="drone01">
-
-        <h2>Tags</h2>
-        {% for item in data %}
-            <input type="radio" name="mac_address" value="{{ item['mac_address'] }}" {% if loop.first %}checked{% endif %}>
-            {{ item['tag_name'] }} ({{ item['mac_address'] }})<br>
-        {% endfor %}
-
+    <main class="main-form">
+        <h2>Let the drone locate your items.</h2>
+        <p>Select a tag and press "Track" to command the drone to find it.</p>
         <br>
-        <button type="submit" class="button">📡 추적 시작</button>
-    </form>
-
-    <hr>
-    <h2>Result</h2>
-    <ul class="sidebar">
-      {% for item in data %}
-        <li>{{ item }}</li>
-      {% endfor %}
-    </ul>
-    <hr>
+        <hr>
+        <br>
+        <!-- ✅ 추적용 폼 -->
+        <form action="/submit/track" method="post">
+            <!-- 드론 ID는 고정값으로 숨김 처리 -->
+            <input type="hidden" name="drone_id" value="drone01">
+            <h2>Tags</h2>
+            {% for item in data %}
+                <label class="radio-item">
+                    <input type="radio" name="mac_address" value="{{ item['mac_address'] }}" {% if loop.first %}checked{% endif %}>
+                    <span>{{ item['tag_name'] }} ({{ item['mac_address'] }})</span>
+                </label>
+            {% endfor %}
+            <br>
+            <button type="submit" class="button">📡 추적 시작</button>
+        </form>
+        <hr>
+        <br>
+        <h2>Result</h2>
+        <div class="sidebar">
+            {% for item in data %}
+                <pre>{{ item }}</pre>
+            {% endfor %}
+        </div>
+    </main>
     <footer>
-        <p>J123's Drone Control Panel</p>
+        <p>&copy; 2025 J123's Drone Control Panel. All rights reserved.</p>
     </footer>
 </body>
 </html>
