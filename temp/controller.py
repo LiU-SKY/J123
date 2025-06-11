@@ -2,7 +2,7 @@
 
 import time
 from pymavlink import mavutil
-
+#
 # --- 설정 ---
 CONNECTION_PORT = '/dev/ttyACM0'  # USB 포트 (시스템에 따라 ttyUSB0 등일 수 있음)
 BAUD_RATE = 57600                # QGroundControl에서 설정한 BAUD와 일치해야 함
