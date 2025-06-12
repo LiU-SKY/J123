@@ -3,6 +3,7 @@ import db
 import dronedb
 import asyncio
 import json  # ✅ JSON 모듈 추가
+import jsonify
 import websockets
 
 app = Flask(__name__)
@@ -92,6 +93,11 @@ def track_device():
         flash(f"{drone_id} 명령 전송 실패: {e}", "error")
 
     return redirect(url_for('index'))
+
+@app.route('/drones/status', methods=['GET'])
+def drones_status():
+    return jsonify(dronedb.get_all_drones_status())  # [{'drone_id': ..., 'status': ...}, ...]
+
 
 # JSON 형식으로 WebSocket 명령 전송
 async def send_tracking_command(drone_id, mac_address):
