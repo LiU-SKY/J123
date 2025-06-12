@@ -1,5 +1,6 @@
 from flask import Flask, request, flash, render_template, redirect, url_for
 import db
+import dronedb
 import asyncio
 import json  # ✅ JSON 모듈 추가
 import websockets
