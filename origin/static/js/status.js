@@ -8,12 +8,12 @@ async function fetchDroneStatus() {
         list.innerHTML = '';  // 기존 목록 초기화
 
         data.forEach(drone => {
-            const li = document.createElement('li');
-            li.innerHTML = `
+            const span = document.createElement('span');
+            span.innerHTML = `
                 ${drone.drone_id}
                 <span class="status-dot ${drone.status === 'online' ? 'status-online' : 'status-offline'}"></span>
             `;
-            list.appendChild(li);
+            list.appendChild(span);
         });
     } catch (err) {
         console.error('드론 상태 가져오기 오류:', err);
