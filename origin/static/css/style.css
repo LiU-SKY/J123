@@ -227,3 +227,32 @@ input[type="radio"] {
 .radio-item input[type="radio"] {
     margin: 0;
 }
+
+.drone-list {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 1em;
+}
+
+.drone-list li {
+    font-weight: 500;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.status-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.status-online {
+    background-color: #28a745; /* 초록색 */
+}
+
+.status-offline {
+    background-color: #6c757d; /* 회색 */
+}
