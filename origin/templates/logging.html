@@ -5,10 +5,17 @@
 </head>
 <body>
     <h1>Received Data</h1>
+    <h2>Tag information</h2>
     <ul>
         {% for item in data %}
-	    <li>{{ item }}</li>
-	{% endfor %}
+	        <li>{{ item }}</li>
+	    {% endfor %}
+    </ul>
+    <h2>Drone information</h2>
+    <ul>
+        {% for item in droneData %}
+	        <li>{{ item }}</li>
+	    {% endfor %}
     </ul>
     <!--자동갱신 시 주석해제
     <h1>Received Data(자동갱신)</h1>
