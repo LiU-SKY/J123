@@ -256,3 +256,19 @@ input[type="radio"] {
 .status-offline {
     background-color: #6c757d; /* 회색 */
 }
+
+.drone-list-horizontal {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: center;
+    margin-bottom: 1em;
+    padding-left: 0;
+}
+
+.drone-list-horizontal span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 500;
+}
