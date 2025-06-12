@@ -8,12 +8,14 @@ async function fetchDroneStatus() {
         container.innerHTML = '';
 
         data.forEach(drone => {
+            const status = drone.status?.trim().toLowerCase() === 'online' ? 'status-online' : 'status-offline';
+
             const span = document.createElement('span');
             span.innerHTML = `
                 ${drone.drone_id}
-                <span class="status-dot ${drone.status === 'online' ? 'status-online' : 'status-offline'}"></span>
+                <span class="status-dot ${status}"></span>
             `;
-            container.appendChild(span);
+            list.appendChild(span);
         });
     } catch (err) {
         console.error('드론 상태 오류:', err);
