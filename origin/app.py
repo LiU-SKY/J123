@@ -11,8 +11,8 @@ app.secret_key = "your_secret_key"
 @app.route('/')
 def index():
    result, statusCode = db.get_all_tags()
-   resultDrone, statusCode = dronedb.get_all_drones()
-   return render_template('index.html', data = result["tags"], droneData = resultDrone["drones"])
+   drones, statusCode = dronedb.get_all_drones()
+   return render_template('index.html', data = result["tags"], drones = drones["drones"])
 
 @app.route('/logging/')
 def logging():
