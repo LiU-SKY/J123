@@ -23,15 +23,11 @@
         <!-- 🛰 드론 상태 섹션 -->
         <div>
             <h2>Drones</h2>
-            <ul class="drone-list">
-                {% for drone in drones %}
-                <li>
-                    {{ drone.drone_id }}
-                    <span class="status-dot {% if drone.status == 'online' %}status-online{% else %}status-offline{% endif %}"></span>
-                </li>
-                {% endfor %}
-            </ul>
+            <div id="drone-status-list" class="drone-list-horizontal">
+                <!-- JS가 여기에 채움 -->
+            </div>
         </div>
+
         <!-- ✅ 추적용 폼 -->
         <form action="/submit/track" method="post">
             <!-- 드론 ID는 고정값으로 숨김 처리 -->
