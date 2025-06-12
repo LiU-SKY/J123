@@ -20,13 +20,17 @@
         <br>
         <hr>
         <br>
+        <!-- 🛰 드론 상태 섹션 -->
         <div>
             <h2>Drones</h2>
-            {% for item in droneData %}
-                <label class="radio-item">
-                    <span>{{ item['drone_id'] }} ({{ item['status'] }})</span>
-                </label>
-            {% endfor %}
+            <ul class="drone-list">
+                {% for drone in drones %}
+                <li>
+                    {{ drone.drone_id }}
+                    <span class="status-dot {% if drone.status == 'online' %}status-online{% else %}status-offline{% endif %}"></span>
+                </li>
+                {% endfor %}
+            </ul>
         </div>
         <!-- ✅ 추적용 폼 -->
         <form action="/submit/track" method="post">
