@@ -12,21 +12,17 @@ def get_all_drones():
     return {"drones": drones}, 200
 
 # 드론 상태만 조회 + 상태 판단
-def get_all_drones_status(timeout=10):
-    now = datetime.utcnow()
+def get_all_drones_status():
+    cursor = drone_status.find({}, {"_id": 0, "drone_id": 1, "status": 1, "last_seen": 1})
     drones = []
 
-    cursor = drone_status.find({}, {"_id": 0, "drone_id": 1, "last_seen": 1})
     for doc in cursor:
+        # status는 a.py에서 저장된 값 그대로 사용
+        status = str(doc.get("status", "offline")).strip().lower()
+
+        # last_seen은 ISO 문자열로 변환 (없으면 공백)
         last_seen = doc.get("last_seen")
-        # last_seen이 없으면 offline 처리
-        if last_seen is None:
-            status = "offline"
-            last_seen_str = ""
-        else:
-            diff = (now - last_seen).total_seconds()
-            status = "online" if diff <= timeout else "offline"
-            last_seen_str = last_seen.isoformat()
+        last_seen_str = last_seen.isoformat() if last_seen else ""
 
         drones.append({
             "drone_id": doc.get("drone_id"),
