@@ -247,6 +247,7 @@ input[type="radio"] {
     width: 10px;
     height: 10px;
     border-radius: 50%;
+    margin-left: 5px;
 }
 
 .status-online {
@@ -262,8 +263,6 @@ input[type="radio"] {
     flex-wrap: wrap;
     gap: 20px;
     align-items: center;
-    margin-bottom: 1em;
-    padding-left: 0;
 }
 
 .drone-list-horizontal span {
