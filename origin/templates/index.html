@@ -20,6 +20,14 @@
         <br>
         <hr>
         <br>
+        <div>
+            <h2>Drones</h2>
+            {% for item in dataData %}
+                <label class="radio-item">
+                    <span>{{ item['drone_id'] }} ({{ item['status'] }})</span>
+                </label>
+            {% endfor %}
+        </div>
         <!-- ✅ 추적용 폼 -->
         <form action="/submit/track" method="post">
             <!-- 드론 ID는 고정값으로 숨김 처리 -->
