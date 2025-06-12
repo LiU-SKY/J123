@@ -15,7 +15,8 @@ def index():
 @app.route('/logging/')
 def logging():
    result, statusCode = db.get_all_tags()
-   return render_template('logging.html', data = result["tags"])
+   resultDrone, statusCode = db.get_all_drones()
+   return render_template('logging.html', data = result["tags"], droneData = resultDrone["drones"])
 
 @app.route('/register/')
 def register():
