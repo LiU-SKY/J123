@@ -19,6 +19,8 @@ async function fetchDroneStatus() {
                 <span class="status-dot ${statusClass}"></span>
             `;
             list.appendChild(span);
+            console.log(`[DEBUG] ${drone.drone_id} status = "${drone.status}"`);
+
         });
     } catch (err) {
         console.error('드론 상태 표시 중 오류 발생:', err);
