@@ -99,7 +99,7 @@ def registerTag():
       flash(result["message"], "success")
    return redirect(url_for('register'))
 ```
-HTTP POST 방식으로 요청을 받고 `db.register_tag()` 함수로 **DB(tags 컬렉션)**에 저장<br>
+HTTP POST 방식으로 요청을 받고 `db.register_tag()` 함수로 **DB(tags 컬렉션)** 에 저장<br>
 
 ### 수정
 ```python
