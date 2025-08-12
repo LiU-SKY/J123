@@ -48,6 +48,7 @@
 
 ## 시퀀스 다이어그램
 <img src = "./assets/SequenceDiagram.jpg" width="80%">
+
 # 웹페이지 설명
 
 ## Flask 페이지
