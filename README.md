@@ -37,14 +37,15 @@ Flask 페이지는 서버에서 localhost로만 실행되며, GPS 정보를 화�
 [
   {
     _id: ObjectId('68024808fb70db1095d861e2'),
-    name: 'Drone A',
-    status: '활동 중',
-    loaction: { lat: 37.7749, lon: -122.4194 },
-    tag: {
-      mac_address: 'AA:BB:CC:DD:EE:FF',
-      tag_name: 'Tag-1',
-      location: 'Zone A'
-    }
+    name: 'Drone 01',
+    last_seen: ISODate("2025-06-27T07:14:43.337Z'),
+    status: 'online'
+   }
+  {
+    _id: ObjectId('68024808fb70db1095d861e2'),
+    mac_address: 'AA:BB:CC:DD:EE:01',
+    tag_name: 'Tag-1',
+    location: 'Null'
   }
 ]
 ```
