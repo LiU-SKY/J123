@@ -53,14 +53,17 @@
 Flask 페이지는 서버에서 localhost로만 실행되며, GPS 정보를 화면에 표시
 
 ### /
+![home](./assets/home.png)
 홈페이지<br/>
 드론 조작 및 로깅 정보 확인 가능
 
 ### /logging
+![logging](./assets/logging.png)
 로깅 페이지<br/>
 임시 페이지이며, 로깅 정보만 확인 가능
 
 ### /register
+![register](./assets/register.png)
 등록 페이지<br/>
 태그 등록/삭제, 로깅 지원
 
