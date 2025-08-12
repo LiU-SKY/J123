@@ -47,24 +47,24 @@
 <img src = "./assets/flowchart.jpeg" width="80%">
 
 ## 시퀀스 다이어그램
-![SequenceDiagram](./assets/SequenceDiagram.jpg)
+<img src = "./assets/SequenceDiagram.jpg" width="80%">
 # 웹페이지 설명
 
 ## Flask 페이지
 Flask 페이지는 서버에서 localhost로만 실행되며, GPS 정보를 화면에 표시
 
 ### /
-![home](./assets/home.png)
+<img src = "./assets/home.png" width="80%">
 홈페이지<br/>
 드론 조작 및 로깅 정보 확인 가능
 
 ### /logging
-![logging](./assets/logging.png)
+<img src = "./assets/logging.png" width="80%">
 로깅 페이지<br/>
 임시 페이지이며, 로깅 정보만 확인 가능
 
 ### /register
-![register](./assets/register.png)
+<img src = "./assets/register.png" width="80%">
 등록 페이지<br/>
 태그 등록/삭제, 로깅 지원
 
