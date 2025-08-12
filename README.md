@@ -49,22 +49,19 @@
 ## 시퀀스 다이어그램
 <img src = "./assets/SequenceDiagram.jpg" width="80%">
 
-# 웹페이지 설명
+# 웹페이지
 
-## Flask 페이지
-Flask 페이지는 서버에서 localhost로만 실행되며, GPS 정보를 화면에 표시
-
-### /
+## /
 <img src = "./assets/home.png" width="80%">
 홈페이지<br/>
 드론 조작 및 로깅 정보 확인 가능
 
-### /logging
+## /logging
 <img src = "./assets/logging.png" width="80%">
 로깅 페이지<br/>
 임시 페이지이며, 로깅 정보만 확인 가능
 
-### /register
+## /register
 <img src = "./assets/register.png" width="80%">
 등록 페이지<br/>
 태그 등록/삭제, 로깅 지원
@@ -87,12 +84,48 @@ Flask 페이지는 서버에서 localhost로만 실행되며, GPS 정보를 화�
 ]
 ```
 
-## 데이터 전송 방법
-### flask
+## Flask /submit 라우트
+### 등록
 ```python
-@app.route('/submit/', methods=['POST'])
-def submit():
-    data = request.get_json()
-    value = data.get('value')
-    return f"Received value: {value}", 200
+@app.route('/submit/register/tag/', methods=['POST'])
+def registerTag():
+   macAddress = request.form.get('macAddress')
+   tagName = request.form.get('tagName')
+   location = request.form.get('location')
+   result, statusCode = db.register_tag(macAddress, tagName, location)
+   if statusCode != 201:
+      flash(result["error"], "error")
+   else:
+      flash(result["message"], "success")
+   return redirect(url_for('register'))
 ```
+HTTP POST 방식으로 요청을 받고 `db.register_tag()` 함수로 **DB(tags 컬렉션)** 에 저장<br>
+
+### 수정
+```python
+@app.route('/submit/edit/tag/', methods=['POST'])
+def editTag():
+   macAddress = request.form.get('macAddress')
+   tagName = request.form.get('tagName')
+   result, statusCode = db.update_tag(macAddress, tagName)
+   if statusCode != 200:
+      flash(result["error"], "error")
+   else:
+      flash(result["message"], "success")
+   return redirect(url_for('register'))
+```
+HTTP POST 방식으로 요청을 받고 `db.update_tag()` 함수로 **DB(tags 컬렉션)** 수정<br>
+
+### 삭제
+```python
+@app.route('/submit/delete/tag/', methods=['POST'])
+def deleteTag():
+   macAddress = request.form.get('deleteTag')
+   result, statusCode = db.delete_tag(macAddress)
+   if statusCode != 200:
+      flash(result["error"], "error")
+   else:
+      flash(result["message"], "success")
+   return redirect(url_for('register'))
+```
+HTTP POST 방식으로 요청을 받고 `db.delete_tag()` 함수로 **DB(tags 컬렉션)** 에서 삭제<br>
