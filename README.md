@@ -128,4 +128,4 @@ def deleteTag():
       flash(result["message"], "success")
    return redirect(url_for('register'))
 ```
-HTTP POST 방식으로 요청을 받고 `db.delete_tag()` 함수로 **DB(tags 컬렉션)**에서 삭제<br>
+HTTP POST 방식으로 요청을 받고 `db.delete_tag()` 함수로 **DB(tags 컬렉션)** 에서 삭제<br>
