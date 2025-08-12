@@ -1,10 +1,42 @@
 # J123 캡스톤 디자인
 
-# 깃허브 최상위 폴더
-- app.py: Flask 실행파일
-- assets: README.md에 사용될 이미지 등을 저장
-- static: 자바스크립트 등 정적 웹페이지 구성요소 저장
-- templates: index.html 등 웹 페이지 저장
+# 트리 구조
+```
+.
+├── README.md
+├── assets
+│   ├── SequenceDiagram.jpg
+│   └── flowchart.jpeg
+├── drone
+│   ├── SERCH.py
+│   ├── controller.py
+│   ├── main
+│   │   ├── drone_client.py
+│   │   ├── simul.py
+│   │   └── tracking.py
+│   └── socket
+│       ├── Client RSSI scan.py
+│       ├── RSSI scan.py
+│       ├── Tracking.py
+│       └── client.py
+└── origin
+    ├── app.py                   # Flask
+    ├── db.py
+    ├── dronedb.py
+    ├── run_server.py
+    ├── server.py
+    ├── static                   # CSS, JS 등
+    │   ├── css
+    │   │   ├── style.css
+    │   │   └── style_bak.css
+    │   └── js
+    │       ├── autoReload.js
+    │       └── status.js
+    └── templates                # 페이지별 HTML
+        ├── index.html
+        ├── logging.html
+        └── register.html
+```
 
 # 깃허브 브랜치 설명
 - main: 문서화 및 전체 코드 업로드
