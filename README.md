@@ -44,7 +44,7 @@
 
 # 프로젝트 구조
 ## 플로우 차트
-![flowchart](./assets/flowchart.jpeg)
+<img src = "./assets/flowchart.jpeg" width="50%">
 ## 시퀀스 다이어그램
 ![SequenceDiagram](./assets/SequenceDiagram.jpg)
 # 웹페이지 설명
