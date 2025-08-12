@@ -21,8 +21,8 @@
 │       └── client.py
 └── origin
     ├── app.py                   # Flask
-    ├── db.py
-    ├── dronedb.py
+    ├── db.py                    # tags 컬렉션
+    ├── dronedb.py               # drones 컬렉션 (server.py 기반)
     ├── run_server.py
     ├── server.py
     ├── static                   # CSS, JS 등
