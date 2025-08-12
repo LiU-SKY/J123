@@ -49,7 +49,7 @@
 ## 시퀀스 다이어그램
 <img src = "./assets/SequenceDiagram.jpg" width="80%">
 
-# 웹페이지 설명
+# 웹페이지
 
 ## /
 <img src = "./assets/home.png" width="80%">
@@ -84,7 +84,7 @@
 ]
 ```
 
-## Flask /submit 데코레이션
+## Flask /submit 라우트
 ### 등록
 ```python
 @app.route('/submit/register/tag/', methods=['POST'])
