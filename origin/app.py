@@ -14,7 +14,7 @@ trackResult = []
 def index():
    result, statusCode = db.get_all_tags()
    drones, statusCode = dronedb.get_all_drones()
-   return render_template('index.html', data = result["tags"], drones = drones["drones"], track = trackResult)
+   return render_template('index.html', drones = drones["drones"], track = trackResult)
 
 @app.route('/logging/')
 def logging():
