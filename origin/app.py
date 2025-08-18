@@ -82,13 +82,14 @@ def editTag():
 def track_device():
     drone_id = 'drone01'
     mac_address = request.form.get('mac_address')
+    command_type = "track"
 
     if not drone_id or not mac_address:
         trackResult.append("드론 또는 MAC 주소가 선택되지 않았습니다.")
         return redirect(url_for('index'))
 
     try:
-        asyncio.run(send_tracking_command(drone_id, mac_address))
+        asyncio.run(send_command(command_type, drone_id, mac_address))
         trackResult.append(f"{drone_id}에게 {mac_address} 추적 명령 전송 완료")
     except Exception as e:
         trackResult.append(f"{drone_id} 명령 전송 실패: {e}")
@@ -103,30 +104,20 @@ def drones_status():
 def stop():
    drone_id = 'drone01'
    mac_address = request.form.get('mac_address')
+   command_type = "stop"
    try:
-        asyncio.run(send_stop_command(drone_id, mac_address))
+        asyncio.run(send_command(command_type, drone_id, mac_address))
         trackResult.append(f"{drone_id}에게 {mac_address} 추적 중지 명령 전송 완료")
    except Exception as e:
         trackResult.append(f"{drone_id} 명령 전송 실패: {e}")
    return redirect(url_for('index'))
 
 # JSON 형식으로 WebSocket 명령 전송
-async def send_tracking_command(drone_id, mac_address):
+async def send_command(command_type, drone_id, mac_address):
     try:
         async with websockets.connect("ws://52.79.236.231:8765") as ws:
             await ws.send(json.dumps({
-                "type": "track",
-                "drone_id": drone_id,
-                "mac": mac_address
-            }))
-    except Exception as e:
-        raise RuntimeError(f"WebSocket 전송 실패: {e}")
-    
-async def send_stop_command(drone_id, mac_address):
-    try:
-        async with websockets.connect("ws://52.79.236.231:8765") as wss:
-            await wss.send(json.dumps({
-                "type": "stop",
+                "type": command_type,
                 "drone_id": drone_id,
                 "mac": mac_address
             }))
