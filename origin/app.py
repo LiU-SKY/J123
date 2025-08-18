@@ -104,7 +104,7 @@ def stop():
    drone_id = 'drone01'
    mac_address = request.form.get('mac_address')
    try:
-        asyncio.run(send_tracking_command(drone_id, mac_address))
+        asyncio.run(send_stop_command(drone_id, mac_address))
         trackResult.append(f"{drone_id}에게 {mac_address} 추적 중지 명령 전송 완료")
    except Exception as e:
         trackResult.append(f"{drone_id} 명령 전송 실패: {e}")
@@ -130,6 +130,7 @@ async def send_stop_command(drone_id, mac_address):
                 "drone_id": drone_id,
                 "mac": mac_address
             }))
+            print("stop")
     except Exception as e:
         raise RuntimeError(f"WebSocket 전송 실패: {e}")
 
