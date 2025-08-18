@@ -99,6 +99,16 @@ def track_device():
 def drones_status():
     return jsonify(dronedb.get_all_drones_status())  # [{'drone_id': ..., 'status': ...}, ...]
 
+@app.route('/submit/stop', methods=['POST'])
+def stop():
+   drone_id = 'drone01'
+   mac_address = request.form.get('mac_address')
+   try:
+        asyncio.run(send_stop_command(drone_id, mac_address))
+        trackResult.append(f"{drone_id}에게 {mac_address} 추적 중지 명령 전송 완료")
+   except Exception as e:
+        trackResult.append(f"{drone_id} 명령 전송 실패: {e}")
+   return redirect(url_for('index'))
 
 # JSON 형식으로 WebSocket 명령 전송
 async def send_tracking_command(drone_id, mac_address):
@@ -106,6 +116,17 @@ async def send_tracking_command(drone_id, mac_address):
         async with websockets.connect("ws://52.79.236.231:8765") as ws:
             await ws.send(json.dumps({
                 "type": "track",
+                "drone_id": drone_id,
+                "mac": mac_address
+            }))
+    except Exception as e:
+        raise RuntimeError(f"WebSocket 전송 실패: {e}")
+    
+async def send_stop_command(drone_id, mac_address):
+    try:
+        async with websockets.connect("ws://52.79.236.231:8765") as ws:
+            await ws.send(json.dumps({
+                "type": "stop",
                 "drone_id": drone_id,
                 "mac": mac_address
             }))
