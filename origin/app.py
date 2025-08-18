@@ -8,11 +8,13 @@ import websockets
 app = Flask(__name__)
 app.secret_key = "your_secret_key"
 
+trackResult = []
+
 @app.route('/')
 def index():
    result, statusCode = db.get_all_tags()
    drones, statusCode = dronedb.get_all_drones()
-   return render_template('index.html', data = result["tags"], drones = drones["drones"])
+   return render_template('index.html', data = result["tags"], drones = drones["drones"], track = trackResult)
 
 @app.route('/logging/')
 def logging():
@@ -82,14 +84,14 @@ def track_device():
     mac_address = request.form.get('mac_address')
 
     if not drone_id or not mac_address:
-        flash("드론 또는 MAC 주소가 선택되지 않았습니다.", "error")
+        trackResult.append("드론 또는 MAC 주소가 선택되지 않았습니다.")
         return redirect(url_for('index'))
 
     try:
         asyncio.run(send_tracking_command(drone_id, mac_address))
-        flash(f"{drone_id}에게 {mac_address} 추적 명령 전송 완료", "success")
+        trackResult.append(f"{drone_id}에게 {mac_address} 추적 명령 전송 완료")
     except Exception as e:
-        flash(f"{drone_id} 명령 전송 실패: {e}", "error")
+        trackResult.append(f"{drone_id} 명령 전송 실패: {e}")
 
     return redirect(url_for('index'))
 
