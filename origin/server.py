@@ -60,6 +60,18 @@ async def handler(websocket, path):
                 else:
                     print(f"❌ 드론 {target_drone} 연결되지 않음")
 
+            elif msg_type == "stop":
+                print(f"🚀 track 명령 수신: {data}")
+                target_drone = data.get("drone_id")
+                if target_drone in connected_clients:
+                    await connected_clients[target_drone].send(json.dumps({
+                        "type": "stop",
+                        "mac": data.get("mac")
+                    }))
+                    print(f"📡 stop 명령 전달 완료 → {target_drone}")
+                else:
+                    print(f"❌ 드론 {target_drone} 연결되지 않음")
+
     except websockets.exceptions.ConnectionClosed:
         print(f"❌ {drone_id} 연결 종료됨")
         if drone_id in connected_clients:
