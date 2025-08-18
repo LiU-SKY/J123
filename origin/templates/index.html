@@ -43,6 +43,12 @@
             <button type="submit" class="button">📡 추적 시작</button>
         </form>
         <form action="/submit/stop" method="post">
+            {% for item in data %}
+                <label class="radio-item">
+                    <input type="radio" name="mac_address" value="{{ item['mac_address'] }}" {% if loop.first %}checked{% endif %}>
+                    <span>{{ item['tag_name'] }} ({{ item['mac_address'] }})</span>
+                </label>
+            {% endfor %}
             <button type="submit" class="button" value="stop">추척 중지</button>
         </form>
         <hr>
