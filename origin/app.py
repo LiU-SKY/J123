@@ -124,13 +124,12 @@ async def send_tracking_command(drone_id, mac_address):
     
 async def send_stop_command(drone_id, mac_address):
     try:
-        async with websockets.connect("ws://52.79.236.231:8765") as ws:
-            await ws.send(json.dumps({
+        async with websockets.connect("ws://52.79.236.231:8765") as wss:
+            await wss.send(json.dumps({
                 "type": "stop",
                 "drone_id": drone_id,
                 "mac": mac_address
             }))
-            print("stop")
     except Exception as e:
         raise RuntimeError(f"WebSocket 전송 실패: {e}")
 
