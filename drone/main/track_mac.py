@@ -122,6 +122,11 @@ async def main_loop():
                 async for message in websocket:
                     try:
                         data = json.loads(message)
+                        print(data.get("type"))
+                        if data.get("type") == "stop" and not tracking_task.done():
+                            print(f"🎯 서버로부터 추적 중지 명령 수신")
+                            tracking_task.cancel()
+
                         if data.get("type") == "track":
                             target_mac = data["mac"]
                             print(f"🎯 서버로부터 추적 명령 수신: {target_mac}")
